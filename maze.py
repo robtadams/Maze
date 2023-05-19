@@ -18,15 +18,15 @@ class Maze():
 
         # width:    an integer the holds the number of cells wide the maze
         #           will be
-        self.width = 10
+        self.width = 50
 
         # height:   an integer that holds the number of cells tall the maze
         #           will be
-        self.height = 10
+        self.height = 40
 
         # cellSize: an integer that holds the number of pixels tall/wide
         #           each cell will be
-        self.cellSize = 25
+        self.cellSize = 10
 
         # screen:   a Pygame window that is width * cellSize wide,
         #           and height * cellSize tall
@@ -62,9 +62,8 @@ class Maze():
                     if (row + column) % 2:
 
                         # ... construct a rectangle at the cell
-                        # Note: column is the X-axis, and row is the Y-axis
-                        tempRect = [column * self.cellSize,
-                                    row * self.cellSize,
+                        tempRect = [row * self.cellSize,
+                                    column * self.cellSize,
                                     self.cellSize,
                                     self.cellSize]
 
@@ -74,7 +73,7 @@ class Maze():
                         # ... then update the display
                         pygame.display.update()
 
-                        time.sleep(.1)
+                        #time.sleep(.1)
 
             # Then, add the full row to the mazeArray
             self.mazeArray.append(self.mazeRow)
@@ -120,16 +119,16 @@ class Maze():
                                     self.cellSize]
 
                         # ... and draw a white rectangle at that cell
-                        pygame.draw.rect(self.screen, "white", (j * self.cellSize,
-                                                                i * self.cellSize,
+                        pygame.draw.rect(self.screen, "white", (i * self.cellSize,
+                                                                j * self.cellSize,
                                                                 self.cellSize,
                                                                 self.cellSize))
 
-                        # ... then update the display
-                        pygame.display.update()
+            # ... then update the display
+            pygame.display.update()
 
-                        # ... and wait so the user can see it being generated
-                        time.sleep(.1)
+            # Wait so the user can see the maze generation
+            time.sleep(0)
 
 myMaze = Maze()
 myMaze.main()

@@ -3,12 +3,15 @@ import random
 import time
 
 global TEST
-TEST = False
+TEST = True
+
+global NOISE
+NOISE = False
 
 class Maze():
 
     def __init__(self):
-
+        
         """ Initialization """
 
         # Initializes Pygame
@@ -39,19 +42,28 @@ class Maze():
         #               in the maze
         self.mazeArray = []
 
+        # cellArray:    a list that contains the logic for each cell in the maze
+        self.cellArray = []
+
         """ Maze Array Construction """
 
         # For each row...
         for row in range(self.width):
 
-            # ... build a list for that row
+            # ... build a list for that row in the maze
             self.mazeRow = []
+
+            # ... build a list for each cell in that row
+            self.cellRow = []
 
             # For each column...
             for column in range(self.height):
 
                 # ... add the coordinates of that cell to mazeRow
                 self.mazeRow.append((row * self.cellSize, column * self.cellSize))
+
+                # ... add the index of the cell to cellRow
+                self.cellRow.append((row, column))
 
                 """ Testing """
 
@@ -73,8 +85,6 @@ class Maze():
                         # ... then update the display
                         pygame.display.update()
 
-                        #time.sleep(.1)
-
             # Then, add the full row to the mazeArray
             self.mazeArray.append(self.mazeRow)
 
@@ -83,16 +93,26 @@ class Maze():
         # If testing...
         if TEST:
 
+            print("[Row, Column] : (Pixel X, Pixel Y)\n--------------------")
+
             # ... for each row in the mazeArray...
-            for row in self.mazeArray:
+            for i, row in enumerate(self.mazeArray):
 
                 # ... for each column in the row...
-                for column in row:
+                for j, column in enumerate(row):
 
                     # ... print the coordinate at that cell
-                    print(column, end = "")
+                    print("[{0}, {1}] : {2}".format(i, j, column))
 
-                print()
+                print(end="--------------------\n")
+
+        """ Noise """
+
+        if NOISE:
+
+            self.randomPrint()
+
+    def randomPrint(self):
 
         """ Random Printing """
 
@@ -128,7 +148,7 @@ class Maze():
             pygame.display.update()
 
             # Wait so the user can see the maze generation
-            time.sleep(0)
+            time.sleep(1)
 
 myMaze = Maze()
 myMaze.main()

@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+from cell import Cell
 
 global TEST
 TEST = True
@@ -38,44 +39,46 @@ class Maze():
 
     def main(self):
 
-        # mazeArray:    a list that contains the coordinates for each cell
-        #               in the maze
-        self.mazeArray = []
-
         # cellArray:    a list that contains the logic for each cell in the maze
         self.cellArray = []
 
-        """ Maze Array Construction """
+        """ Cell Array Construction """
+
+        if TEST:
+
+            print("\n--- CELL ARRAY TEST ---\n")
 
         # For each row...
         for row in range(self.width):
-
-            # ... build a list for that row in the maze
-            self.mazeRow = []
-
+            
             # ... build a list for each cell in that row
             self.cellRow = []
 
             # For each column...
             for column in range(self.height):
 
-                # ... add the coordinates of that cell to mazeRow
-                self.mazeRow.append((row * self.cellSize, column * self.cellSize))
-
-                # ... add the index of the cell to cellRow
-                self.cellRow.append((row, column))
+                # ... create a new cell
+                newCell = Cell(row = row, column = column)
+                
+                # ... add the cell to cellRow
+                self.cellRow.append(newCell)
 
                 """ Testing """
 
                 # If testing...
                 if TEST:
 
+                    print("[{0}, {1}] : ({2}, {3})".format(newCell.row,
+                                                          newCell.column,
+                                                          newCell.X,
+                                                          newCell.Y))
+                    
                     # ... if row + column is odd...
                     if (row + column) % 2:
 
                         # ... construct a rectangle at the cell
-                        tempRect = [row * self.cellSize,
-                                    column * self.cellSize,
+                        tempRect = [newCell.X,
+                                    newCell.Y,
                                     self.cellSize,
                                     self.cellSize]
 
@@ -85,26 +88,14 @@ class Maze():
                         # ... then update the display
                         pygame.display.update()
 
+                        time.sleep(.025)
+
             # Then, add the full row to the mazeArray
-            self.mazeArray.append(self.mazeRow)
+            self.cellArray.append(self.cellRow)
 
-        """ Testing """
+            if TEST:
 
-        # If testing...
-        if TEST:
-
-            print("[Row, Column] : (Pixel X, Pixel Y)\n--------------------")
-
-            # ... for each row in the mazeArray...
-            for i, row in enumerate(self.mazeArray):
-
-                # ... for each column in the row...
-                for j, column in enumerate(row):
-
-                    # ... print the coordinate at that cell
-                    print("[{0}, {1}] : {2}".format(i, j, column))
-
-                print(end="--------------------\n")
+                print("----------")
 
         """ Noise """
 

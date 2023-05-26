@@ -23,10 +23,10 @@ class Cell():
         # box should be drawn from.
 
         # X: an integer that holds the X coordinate of the cell
-        self.X = row * cellSize
+        self.X = column * cellSize
 
         # Y: an integer that holds the Y coordinate of the cell
-        self.Y = column * cellSize
+        self.Y = row * cellSize
 
         # distance: an integer that holds the number of cell's required
         #           to traverse from the start of the maze to this cell
@@ -35,6 +35,12 @@ class Cell():
         # isWall: a boolean that keeps track if the cell is a wall or
         #           a path
         self.isWall = True
+
+        # isStart: a boolean that keeps track of the first cell in the maze
+        self.isStart = False
+
+        # isEnd: a boolean that keeps track of the end of the maze
+        self.isEnd = False
 
 if __name__ == "__main__":
 

@@ -4,7 +4,7 @@ import time
 from cell import Cell
 
 global TEST
-TEST = True
+TEST = False
 
 global NOISE
 NOISE = False
@@ -49,13 +49,13 @@ class Maze():
             print("\n--- CELL ARRAY TEST ---\n")
 
         # For each row...
-        for row in range(self.width):
+        for row in range(self.height):
             
             # ... build a list for each cell in that row
             self.cellRow = []
 
             # For each column...
-            for column in range(self.height):
+            for column in range(self.width):
 
                 # ... create a new cell
                 newCell = Cell(row = row, column = column)
@@ -97,11 +97,42 @@ class Maze():
 
                 print("----------")
 
-        """ Noise """
+        if TEST:
 
-        if NOISE:
+            time.sleep(1)
+            
+            self.screen.fill("black")
 
-            self.randomPrint()
+            pygame.display.update()
+
+        """ Maze Building """
+
+        self.startMaze(self.startCell)
+
+    def buildMaze(self, cell):
+
+        
+
+    def startMaze(self):
+
+        # randStart: an integer that holds the starting height for the first
+        #           path cell in the maze
+        randStart = random.randint(0, self.height - 1)
+
+        # startCell: the first path cell in the maze
+        self.startCell = self.cellArray[randStart][0]
+
+        # The startCell is the beginning of the maze
+        startCell.isStart = True
+
+        # startRect: a list that contains the startCell's X and Y coordinates
+        #           for the maze to render
+        startRect = [startCell.X, startCell.Y, self.cellSize, self.cellSize]
+
+        # Draw the start cell on the screen
+        pygame.draw.rect(self.screen, "green", startRect)
+
+        pygame.display.update()
 
     def randomPrint(self):
 
@@ -141,5 +172,7 @@ class Maze():
             # Wait so the user can see the maze generation
             time.sleep(1)
 
-myMaze = Maze()
-myMaze.main()
+if __name__ == "__main__":
+
+    myMaze = Maze()
+    myMaze.main()

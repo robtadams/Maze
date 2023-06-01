@@ -35,7 +35,7 @@ class Maze():
         # screen:   a Pygame window that is width * cellSize wide,
         #           and height * cellSize tall
         self.screen = pygame.display.set_mode((self.width * self.cellSize,
-                                          self.height * self.cellSize))
+                                              self.height * self.cellSize))
 
     def main(self):
 
@@ -107,20 +107,16 @@ class Maze():
 
         """ Maze Building """
 
-        self.startMaze(self.startCell)
-
-    def buildMaze(self, cell):
-
-        
+        self.startMaze()
 
     def startMaze(self):
 
         # randStart: an integer that holds the starting height for the first
         #           path cell in the maze
-        randStart = random.randint(0, self.height - 1)
+        randStart = random.randint(1, self.height - 2)
 
         # startCell: the first path cell in the maze
-        self.startCell = self.cellArray[randStart][0]
+        startCell = self.cellArray[randStart][0]
 
         # The startCell is the beginning of the maze
         startCell.isStart = True
@@ -133,6 +129,24 @@ class Maze():
         pygame.draw.rect(self.screen, "green", startRect)
 
         pygame.display.update()
+
+        buildMaze(startCell)
+
+    def buildMaze(self, cell):
+
+        directions = ["North", "East", "South", "West"]
+
+        direction = directions[random.randint(0, 3)]
+
+        match direction:
+
+            case "North":
+
+            case "East":                
+
+            case "South":
+
+            case "West":
 
     def randomPrint(self):
 

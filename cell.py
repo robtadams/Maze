@@ -42,6 +42,10 @@ class Cell():
         # isEnd: a boolean that keeps track of the end of the maze
         self.isEnd = False
 
+        # directions: a list that keeps track of the legal directions for the
+        #               maze to build out from.
+        self.directions = ["North", "East", "South", "West"]
+
 if __name__ == "__main__":
 
     for i in range(5):

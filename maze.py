@@ -59,6 +59,18 @@ class Maze():
 
                 # ... create a new cell
                 newCell = Cell(row = row, column = column)
+
+                if newCell.row == 0:
+                    newCell.directions.remove("North")
+
+                if newCell.row == self.height - 1:
+                    newCell.directions.remove("South")
+
+                if newCell.column == 0:
+                    newCell.directions.remove("West")
+
+                if newCell.column == self.width - 1:
+                    newCell.directions.remove("East")
                 
                 # ... add the cell to cellRow
                 self.cellRow.append(newCell)
@@ -130,23 +142,51 @@ class Maze():
 
         pygame.display.update()
 
-        buildMaze(startCell)
+        self.buildMaze(startCell)
+
+        print("Done :)")
 
     def buildMaze(self, cell):
 
-        directions = ["North", "East", "South", "West"]
+        for i in range(len(cell.directions)):
 
-        direction = directions[random.randint(0, 3)]
+            if len(cell.directions) > 0:
 
-        match direction:
+                rand = random.randint(1, len(cell.directions)) - 1
 
-            case "North":
+                direction = cell.directions.pop(rand)
 
-            case "East":                
+            else:
 
-            case "South":
+                return
 
-            case "West":
+            pathRect = [cell.X, cell.Y, self.cellSize, self.cellSize]
+
+            pygame.draw.rect(self.screen, "white", pathRect)
+
+            pygame.display.update()
+
+            time.sleep(0.01)
+
+            match direction:
+
+                case "North":
+
+                    self.buildMaze(self.cellArray[cell.row - 1][cell.column])
+
+                case "East":
+
+                    self.buildMaze(self.cellArray[cell.row][cell.column + 1])
+
+                case "South":
+
+                    self.buildMaze(self.cellArray[cell.row + 1][cell.column])
+
+                case "West":
+
+                    self.buildMaze(self.cellArray[cell.row][cell.column - 1])
+                    
+        return
 
     def randomPrint(self):
 

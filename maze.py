@@ -148,6 +148,18 @@ class Maze():
 
     def buildMaze(self, cell):
 
+        self.cellArray[cell.row][cell.column].isWall = False
+
+        pathRect = [cell.X, cell.Y, self.cellSize, self.cellSize]
+
+        if self.screen.get_at((cell.X, cell.Y)) == (0, 0, 0, 255):
+            pygame.draw.rect(self.screen, "white", pathRect)
+
+        else:
+            pygame.draw.rect(self.screen, "red", pathRect)
+
+        pygame.display.update()
+
         for i in range(len(cell.directions)):
 
             if len(cell.directions) > 0:
@@ -160,32 +172,35 @@ class Maze():
 
                 return
 
-            pathRect = [cell.X, cell.Y, self.cellSize, self.cellSize]
-
-            pygame.draw.rect(self.screen, "white", pathRect)
-
-            pygame.display.update()
-
-            time.sleep(0.01)
+            time.sleep(0.1)
 
             match direction:
 
                 case "North":
 
-                    self.buildMaze(self.cellArray[cell.row - 1][cell.column])
+                    if self.cellArray[cell.row - 1][cell.column].isWall:
+                        print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row - 1, cell.column))
+                        self.buildMaze(self.cellArray[cell.row - 1][cell.column])
 
                 case "East":
 
-                    self.buildMaze(self.cellArray[cell.row][cell.column + 1])
+                    if self.cellArray[cell.row][cell.column + 1].isWall:
+                        print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row, cell.column + 1))
+                        self.buildMaze(self.cellArray[cell.row][cell.column + 1])
 
                 case "South":
 
-                    self.buildMaze(self.cellArray[cell.row + 1][cell.column])
+                    if self.cellArray[cell.row + 1][cell.column].isWall:
+                        print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row + 1, cell.column))
+                        self.buildMaze(self.cellArray[cell.row + 1][cell.column])
 
                 case "West":
 
-                    self.buildMaze(self.cellArray[cell.row][cell.column - 1])
-                    
+                    if self.cellArray[cell.row][cell.column - 1].isWall:
+                        print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row, cell.column - 1))
+                        self.buildMaze(self.cellArray[cell.row][cell.column - 1])
+
+        print("\n--- Return at {0}, {1} ---\n".format(cell.row, cell.column))      
         return
 
     def randomPrint(self):

@@ -149,6 +149,7 @@ class Maze():
     def buildMaze(self, cell):
 
         self.cellArray[cell.row][cell.column].isWall = False
+        cell.isWall = False
 
         pathRect = [cell.X, cell.Y, self.cellSize, self.cellSize]
 
@@ -156,6 +157,7 @@ class Maze():
             pygame.draw.rect(self.screen, "white", pathRect)
 
         else:
+            print("Overwrite at {0}, {1}".format(cell.row, cell.column))
             pygame.draw.rect(self.screen, "red", pathRect)
 
         pygame.display.update()
@@ -172,31 +174,70 @@ class Maze():
 
                 return
 
-            time.sleep(0.1)
+            time.sleep(0.01)
 
             match direction:
 
                 case "North":
 
-                    if self.cellArray[cell.row - 1][cell.column].isWall:
+                    if cell.column - 1 >= 0 and not self.cellArray[cell.row - 1][cell.column - 1].isWall:
+                        print("Can't go North")
+
+                    elif not self.cellArray[cell.row - 1][cell.column].isWall:
+                        print("Can't go North")
+
+                    elif cell.column + 1 < self.width and not self.cellArray[cell.row - 1][cell.column + 1].isWall:
+                        print("Can't go North")
+
+                    else:
+                        print("Heading North")
                         print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row - 1, cell.column))
                         self.buildMaze(self.cellArray[cell.row - 1][cell.column])
 
                 case "East":
 
-                    if self.cellArray[cell.row][cell.column + 1].isWall:
+                    if cell.row - 1 >= 0 and not self.cellArray[cell.row - 1][cell.column + 1].isWall:
+                        print("Can't go East")
+                        
+                    elif not self.cellArray[cell.row][cell.column + 1].isWall:
+                        print("Can't go East")
+
+                    elif cell.row + 1 < self.height and not self.cellArray[cell.row + 1][cell.column + 1].isWall:
+                        print("Can't go East")
+
+                    else:
+                        print("Heading East")
                         print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row, cell.column + 1))
                         self.buildMaze(self.cellArray[cell.row][cell.column + 1])
 
                 case "South":
 
-                    if self.cellArray[cell.row + 1][cell.column].isWall:
+                    if cell.column - 1 >= 0 and not self.cellArray[cell.row + 1][cell.column -1].isWall:
+                        print("Can't go South")
+
+                    if not self.cellArray[cell.row + 1][cell.column].isWall:
+                        print("Can't go South")
+
+                    if cell.column + 1 < self.width and not self.cellArray[cell.row + 1][cell.column + 1].isWall:
+                        print("Can't go South")
+
+                    else:
+                        print("Heading South")
                         print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row + 1, cell.column))
                         self.buildMaze(self.cellArray[cell.row + 1][cell.column])
 
                 case "West":
 
-                    if self.cellArray[cell.row][cell.column - 1].isWall:
+                    if cell.row - 1 >= 0 and not self.cellArray[cell.row - 1][cell.column - 1].isWall:
+                        print("Can't go West")
+
+                    elif self.cellArray[cell.row][cell.column - 1].isWall:
+                        print("Can't go West")
+
+                    elif cell.row + 1 < self.height and not self.cellArray[cell.row + 1][cell.column - 1].isWall:
+                        print("Can't go West")
+
+                    else:
                         print("{0}, {1} --> {2}, {3}".format(cell.row, cell.column, cell.row, cell.column - 1))
                         self.buildMaze(self.cellArray[cell.row][cell.column - 1])
 

@@ -140,12 +140,14 @@ class Maze():
         # Draw the start cell on the screen
         pygame.draw.rect(self.screen, "green", startRect)
 
+        # Update the screen
         pygame.display.update()
 
         if TEST:
             self.testNum = 0
             print("\n--- BUILD MAZE ---\n")
 
+        # Begin building the maze at startCell
         self.buildMaze(startCell)
 
         print("Done :)")
@@ -220,91 +222,61 @@ class Maze():
 
     def checkNorth(self, cell):
         
-        if cell.column - 1 >= 0 and not self.cellArray[cell.row - 1][cell.column - 1].isWall:
-            if TEST:
-                print("{}. Case 1 Error: Can't go North".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row - 1, cell.column - 1))
-            return False
+        # Check the cells in the adjacent rows...
+        for rowMod in (-2, -1):
 
-        elif not self.cellArray[cell.row - 1][cell.column].isWall:
-            if TEST:
-                print("{}. Case 2 Error: Can't go North".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row - 1, cell.column))
-            return False
+            # ... check the cells in the adjacent columns...
+            for colMod in (-1, 0, 1):
 
-        elif cell.column + 1 < self.width and not self.cellArray[cell.row - 1][cell.column + 1].isWall:
-            if TEST:
-                print("{}. Case 3 Error: Can't go North".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row - 1, cell.column + 1))
-            return False
+                # newRow: the Y coordinate for the adjacent cell
+                newRow = cell.row + rowMod
 
+                # newCol: the X coordinate for the adjacent cell
+                newCol = cell.column + colMod
+
+                # ... if the cell is in bounds...
+                if newRow >= 0:
+                    if newCol >= 0 and newCol < self.width:
+
+                        # ... get the adjacent cell...
+                        checkCell = self.cellArray[newRow][newCol]
+
+                        # ... if that cell is not a wall...
+                        if not checkCell.isWall:
+
+                            # ... then don't build in that direction
+                            return False
+
+        # If all adjacent cells are walls, then you may build in that direction
         return True
 
     def checkEast(self, cell):
 
-        if cell.row - 1 >= 0 and not self.cellArray[cell.row - 1][cell.column + 1].isWall:
-            if TEST:
-                print("{}. Case 4 Error: Can't go East".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row - 1, cell.column + 1))
-            return False
-            
-        elif not self.cellArray[cell.row][cell.column + 1].isWall:
-            if TEST:
-                print("{}. Case 5 Error: Can't go East".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row, cell.column + 1))
-            return False
+        for rowMod in (-1, 0, 1):
 
-        elif cell.row + 1 < self.height and not self.cellArray[cell.row + 1][cell.column + 1].isWall:
-            if TEST:
-                print("{}. Case 6 Error: Can't go East".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row + 1, cell.column + 1))
-            return False
+            for colMod in (1, 2):
+
+                newRow = cell.row + rowMod
+
+                newCol = cell.column + colMod
+
+                if newRow >= 0 and newRow < self.height:
+
+                    if newCol < self.width:
+
+                        checkCell = self.cellArray[newRow][newCol]
+
+                        if not checkCell.isWall:
+
+                            return False
 
         return True
 
     def checkSouth(self, cell):
 
-        if cell.column - 1 >= 0 and not self.cellArray[cell.row + 1][cell.column -1].isWall:
-            if TEST:
-                print("{}. Case 7 Error: Can't go South".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row + 1, cell.column - 1))
-            return False
-
-        elif not self.cellArray[cell.row + 1][cell.column].isWall:
-            if TEST:
-                print("{}. Case 8 Error: Can't go South".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row + 1, cell.column))
-            return False
-
-        elif cell.column + 1 < self.width and not self.cellArray[cell.row + 1][cell.column + 1].isWall:
-            if TEST:
-                print("{}. Case 9 Error: Can't go South".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row + 1, cell.column + 1))
-            return False
-
-        return True
 
     def checkWest(self, cell):
 
-        if cell.row - 1 >= 0 and not self.cellArray[cell.row - 1][cell.column - 1].isWall:
-            if TEST:
-                print("{}. Case 10 Error: Can't go West".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row - 1, cell.column - 1))
-            return False
-
-        elif not self.cellArray[cell.row][cell.column - 1].isWall:
-            if TEST:
-                print("{}. Case 11 Error: Can't go West".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row, cell.column - 1))
-            return False
-
-        elif cell.row + 1 < self.height and not self.cellArray[cell.row + 1][cell.column - 1].isWall:
-            if TEST:
-                print("{}. Case 12 Error: Can't go West".format(self.testNum))
-                print("Path at {0}, {1}\n".format(cell.row + 1, cell.column - 1))
-            return False
-
-        return True
 
     def randomPrint(self):
 

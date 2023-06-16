@@ -37,6 +37,9 @@ class Maze():
         self.screen = pygame.display.set_mode((self.width * self.cellSize,
                                               self.height * self.cellSize))
 
+        # endCell: the path cell furthest from the start cell
+        self.endCell = None
+
     def main(self):
 
         # cellArray:    a list that contains the logic for each cell in the maze
@@ -133,6 +136,9 @@ class Maze():
         # The startCell is the beginning of the maze
         startCell.isStart = True
 
+        # Initialize the endCell to the first cell in the maze
+        self.endCell = startCell
+
         # startRect: a list that contains the startCell's X and Y coordinates
         #           for the maze to render
         startRect = [startCell.X, startCell.Y, self.cellSize, self.cellSize]
@@ -150,7 +156,17 @@ class Maze():
         # Begin building the maze at startCell
         self.buildMaze(startCell)
 
+        endRect = [self.endCell.X, self.endCell.Y, self.cellSize, self.cellSize]
+
+        pygame.draw.rect(self.screen, "red", endRect)
+
+        pygame.display.update()
+
         print("Done :)")
+
+        time.sleep(10)
+
+        pygame.quit()
 
     def buildMaze(self, cell):
 
@@ -158,7 +174,10 @@ class Maze():
             print("{}. Path".format(self.testNum))
             self.testNum += 1
 
-        self.cellArray[cell.row][cell.column].isWall = False
+        cell.isWall = False
+
+        if cell.distance > self.endCell.distance:
+            self.endCell = cell
 
         pathRect = [cell.X, cell.Y, self.cellSize, self.cellSize]
 
@@ -194,6 +213,7 @@ class Maze():
                     if self.checkNorth(cell):
                         if TEST:
                             print("{}. Heading North".format(self.testNum))
+                            
                         self.buildMaze(self.cellArray[cell.row - 1][cell.column])
 
                 case "East":
@@ -247,6 +267,8 @@ class Maze():
                             # ... then don't build in that direction
                             return False
 
+        cell.distance = self.cellArray[cell.row - 1][cell.column].distance + 1
+
         # If all adjacent cells are walls, then you may build in that direction
         return True
 
@@ -270,12 +292,57 @@ class Maze():
 
                             return False
 
+        cell.distance = self.cellArray[cell.row][cell.column + 1].distance + 1
+
         return True
 
     def checkSouth(self, cell):
 
+        for rowMod in (1, 2):
+
+            for colMod in (-1, 0, 1):
+
+                newRow = cell.row + rowMod
+
+                newCol = cell.column + colMod
+
+                if newRow < self.height:
+
+                    if newCol >= 0 and newCol < self.width:
+
+                        checkCell = self.cellArray[newRow][newCol]
+
+                        if not checkCell.isWall:
+
+                            return False
+
+        cell.distance = self.cellArray[cell.row + 1][cell.column].distance + 1
+        
+        return True
 
     def checkWest(self, cell):
+
+        for rowMod in (-1, 0, 1):
+
+            for colMod in (-2, -1):
+
+                newRow = cell.row + rowMod
+
+                newCol = cell.column + colMod
+
+                if newRow >= 0 and newRow < self.height:
+
+                    if newCol >= 0:
+
+                        checkCell = self.cellArray[newRow][newCol]
+
+                        if not checkCell.isWall:
+
+                            return False
+
+        cell.distance = self.cellArray[cell.row][cell.column - 1].distance + 1
+
+        return True
 
 
     def randomPrint(self):
